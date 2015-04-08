@@ -2,14 +2,14 @@
 'use strict';
 
 import React from 'react/addons';
-import StylingMixin from './styling-mixin.jsx';
+import StylingUtil from './styling-util.jsx';
 import Icon from './icon-component.jsx';
 import TimeAgo from './timeago-component.jsx';
 
 let PureRenderMixin = React.addons.PureRenderMixin;
 
 let ComponentItem = React.createClass({
-  mixins: [StylingMixin, PureRenderMixin],
+  mixins: [PureRenderMixin],
   propTypes: {
     description: React.PropTypes.string,
     githubUser: React.PropTypes.string.isRequired,
@@ -20,43 +20,9 @@ let ComponentItem = React.createClass({
     stars: React.PropTypes.number.isRequired
   },
   render() {
-    let styles = {
-      container: {
-        background: "#fff",
-        boxShadow: "0 1px 2px rgba(0,0,0,.2)",
-        margin: 1,
-        padding: this.remCalc(15, 20)
-      },
-      header: {
-        alignItems: "center",
-        boxSizing: "border-box",
-        display: "flex",
-        marginBottom: this.remCalc(10)
-      },
-      title: {
-        flex: 1,
-        WebkitBoxFlex: 1,
-        margin: 0
-      },
-      name: {
-        color: "#3949ab",
-        textDecoration: "none"
-      },
-      author: {
-        paddingLeft: this.remCalc(8)
-      },
-      timestamp: {
-        color: "#999",
-        fontWeight: 200,
-        paddingLeft: this.remCalc(8)
-      },
-      stats: {
-        paddingLeft: this.remCalc(12)
-      },
-      description: {
-        margin: 0
-      }
-    };
+    // Clone the CSS styles and set any state-dependent property
+    let styles = Object.assign({}, this.constructor.styles);
+
     return (
       <div className="ComponentItem" style={styles.container}>
         <div className="ComponentItem-header" style={styles.header}>
@@ -89,5 +55,43 @@ let ComponentItem = React.createClass({
     );
   }
 });
+
+ComponentItem.styles = {
+  container: {
+    background: "#fff",
+    boxShadow: "0 1px 2px rgba(0,0,0,.2)",
+    margin: 1,
+    padding: StylingUtil.remCalc(15, 20)
+  },
+  header: {
+    alignItems: "center",
+    boxSizing: "border-box",
+    display: "flex",
+    marginBottom: StylingUtil.remCalc(10)
+  },
+  title: {
+    flex: 1,
+    WebkitBoxFlex: 1,
+    margin: 0
+  },
+  name: {
+    color: "#3949ab",
+    textDecoration: "none"
+  },
+  author: {
+    paddingLeft: StylingUtil.remCalc(8)
+  },
+  timestamp: {
+    color: "#999",
+    fontWeight: 200,
+    paddingLeft: StylingUtil.remCalc(8)
+  },
+  stats: {
+    paddingLeft: StylingUtil.remCalc(12)
+  },
+  description: {
+    margin: 0
+  }
+};
 
 export default ComponentItem;

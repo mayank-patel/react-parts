@@ -5,7 +5,7 @@ import 'babel/polyfill';
 import 'isomorphic-fetch';
 import React from 'react/addons';
 import Router from 'react-router';
-import StylingMixin from './styling-mixin.jsx';
+import StylingUtil from './styling-util.jsx';
 import NavBar from './nav-bar-component.jsx';
 import ComponentList from './list-component.jsx';
 import {Tabs, Tab} from './tabs-component.jsx';
@@ -17,7 +17,6 @@ let Route = Router.Route;
 let RouteHandler = Router.RouteHandler;
 
 export var App = React.createClass({
-  mixins: [StylingMixin],
   contextTypes: {
     router: React.PropTypes.func
   },
@@ -42,39 +41,12 @@ export var App = React.createClass({
     let type = this.props.params.type;
     let components = this.sortComponents(this.state.filtered);
     let componentsForPage = this.componentsForPage(components);
+    // Clone the CSS styles and set any state-dependent property
+    let styles = Object.assign({}, this.constructor.styles);
 
-    let styles = {
-      container:  {
-        fontFamily: "Source Sans Pro, sans-serif",
-        fontSize: this.remCalc(20),
-        lineHeight: "1.5",
-        cursor: "default"
-      },
-      title: {
-        textAlign: "center"
-      },
-      content: {
-        margin: "0 auto",
-        fontSize: this.remCalc(17),
-        maxWidth: this.remCalc(800),
-        padding: this.remCalc(10)
-      },
-      footer: {
-        color: "#999",
-        fontSize: this.remCalc(16),
-        fontWeight: 200,
-        margin: this.remCalc(30, 0),
-        textAlign: "center"
-      },
-      author: {
-        color: "#3949ab",
-        fontWeight: "bold",
-        textDecoration: "none"
-      }
-    };
     return (
       <Scroller className="scrollable" position="top" style={styles.container}>
-        <NavBar title={title} height={this.remCalc(55)} onSearch={this.handleSearch} />
+        <NavBar title={title} height={StylingUtil.remCalc(55)} onSearch={this.handleSearch} />
 
         <div style={styles.content}>
           <h2 style={styles.title}>A catalog of React components</h2>
@@ -160,6 +132,36 @@ export var App = React.createClass({
     return items.slice(i, j);
   }
 });
+
+App.styles = {
+  container:  {
+    fontFamily: "Source Sans Pro, sans-serif",
+    fontSize: StylingUtil.remCalc(20),
+    lineHeight: "1.5",
+    cursor: "default"
+  },
+  title: {
+    textAlign: "center"
+  },
+  content: {
+    margin: "0 auto",
+    fontSize: StylingUtil.remCalc(17),
+    maxWidth: StylingUtil.remCalc(800),
+    padding: StylingUtil.remCalc(10)
+  },
+  footer: {
+    color: "#999",
+    fontSize: StylingUtil.remCalc(16),
+    fontWeight: 200,
+    margin: StylingUtil.remCalc(30, 0),
+    textAlign: "center"
+  },
+  author: {
+    color: "#3949ab",
+    fontWeight: "bold",
+    textDecoration: "none"
+  }
+};
 
 export var routes = (
   <Route name="app" path="/" handler={App}>

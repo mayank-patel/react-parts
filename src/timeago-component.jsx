@@ -3,22 +3,20 @@
 
 import timeago from 'timeago';
 import React from 'react/addons';
-import StylingMixin from './styling-mixin.jsx';
+import StylingUtil from './styling-util.jsx';
 
 let PureRenderMixin = React.addons.PureRenderMixin;
 
 let TimeAgo = React.createClass({
-  mixins: [StylingMixin, PureRenderMixin],
+  mixins: [PureRenderMixin],
   propTypes: {
     dateTime: React.PropTypes.string.isRequired,
   },
   render() {
-    let styles = {
-      color: "#999",
-      fontWeight: 200,
-      paddingLeft: this.remCalc(8)
-    };
     let relativeTimestamp = timeago(this.props.dateTime);
+    // Clone the CSS styles and set any state-dependent property
+    let styles = Object.assign({}, this.constructor.styles);
+
     return (
       <time dateTime={this.props.dateTime} style={styles}>
         { relativeTimestamp && `updated ${relativeTimestamp}` }
@@ -26,5 +24,11 @@ let TimeAgo = React.createClass({
     );
   }
 });
+
+TimeAgo.styles = {
+  color: "#999",
+  fontWeight: 200,
+  paddingLeft: StylingUtil.remCalc(8)
+};
 
 export default TimeAgo;

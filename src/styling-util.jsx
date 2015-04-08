@@ -3,14 +3,14 @@
 'use strict';
 
 /*
- * Styling Mixin
+ * Styling Util
  *
- * Simple mixin with utility methods for styling components.
+ * Simple module with utility methods for styling components.
  */
-let StylingMixin = {
+let StylingUtil = {
   // This is the `m` method from "CSS in JS" (goo.gl/ZRKFcR). It simply merges an
   // arbitrary number of given objects. Useful for conditionals. Usage example:
-  //    this.mergeStyles(
+  //    StylingUtil.mergeStyles(
   //      styles.example,
   //      isOpen && styles.open
   //    )
@@ -30,4 +30,4 @@ let StylingMixin = {
   }
 };
 
-export default StylingMixin;
+export default StylingUtil;

@@ -2,7 +2,7 @@
 'use strict';
 
 import React from 'react/addons';
-import StylingMixin from './styling-mixin.jsx';
+import StylingUtil from './styling-util.jsx';
 
 let PureRenderMixin = React.addons.PureRenderMixin;
 
@@ -10,7 +10,7 @@ let PureRenderMixin = React.addons.PureRenderMixin;
  * Subset of the SVG icon collection from GitHub
  */
 let Icon = React.createClass({
-  mixins: [StylingMixin, PureRenderMixin],
+  mixins: [PureRenderMixin],
   propTypes: {
     icon: React.PropTypes.string.isRequired,
     size: React.PropTypes.oneOfType([
@@ -65,7 +65,7 @@ let Icon = React.createClass({
     };
     return (
       <svg viewBox="0 0 1024 896" preserveAspectRatio="xMidYMid meet" fit
-        style={this.mergeStyles(
+        style={StylingUtil.mergeStyles(
           styles,
           this.props.style // This lets the parent pass custom styles
         )}>

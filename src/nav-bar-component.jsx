@@ -2,12 +2,12 @@
 'use strict';
 
 import React from 'react/addons';
-import StylingMixin from './styling-mixin.jsx';
+import StylingUtil from './styling-util.jsx';
 
 let PureRenderMixin = React.addons.PureRenderMixin;
 
 let NavBar = React.createClass({
-  mixins: [StylingMixin, PureRenderMixin],
+  mixins: [PureRenderMixin],
   propTypes: {
     title: React.PropTypes.string.isRequired,
     height: React.PropTypes.string.isRequired,
@@ -19,65 +19,11 @@ let NavBar = React.createClass({
     };
   },
   render() {
-    let styles = {
-      container: {
-        alignItems: "center",
-        background: "#05a5d1",
-        boxShadow: "0 -8px 4px 10px rgba(0,0,0,.2)",
-        boxSizing: "border-box",
-        color: "#fff",
-        display: "flex",
-        height: this.props.height,
-        padding: this.remCalc(0, 20)
-      },
-      titleArea: {
-        WebkitBoxFlex: 1,
-        flex: 1,
-        lineHeight: this.props.height,
-        minWidth: this.remCalc(180)
-      },
-      logo: {
-        height: "1em",
-        paddingRight: this.remCalc(10),
-        verticalAlign: "-0.05em",
-        width: "1em"
-      },
-      title: {
-        color: "#fff",
-        fontSize: this.remCalc(26),
-        fontWeight: 600,
-        textDecoration: "none"
-      },
-      center: {
-        alignItems: "center",
-        WebkitBoxFlex: 1,
-        flex: 1,
-        flexGrow: 4,
-        justifyContent: "center",
-        margin: this.remCalc(10),
-        maxWidth: this.remCalc(800)
-      },
-      search: {
-        background: "rgba(255,255,255, .15)",
-        border: "none",
-        borderRadius: "2px",
-        boxSizing: "border-box",
-        fontSize: this.remCalc(16),
-        outline: "none",
-        padding: this.remCalc(8, 10),
-        width: "100%"
-      },
-      link: {
-        color: "#fff",
-        WebkitBoxFlex: 1,
-        flex: 1,
-        margin: this.remCalc(12, 0),
-        minWidth: this.remCalc(180),
-        display: "block",
-        textAlign: "right",
-        textDecoration: "none"
-      }
-    };
+    // Clone the CSS styles and set any state-dependent property
+    let styles = Object.assign({}, this.constructor.styles);
+    styles.container.height = this.props.height;
+    styles.titleArea.lineHeight = this.props.height;
+
     return (
       <div className="NavBar" style={styles.container}>
         <div style={styles.titleArea}>
@@ -105,5 +51,65 @@ let NavBar = React.createClass({
     this.props.onSearch(value);
   }
 });
+
+NavBar.styles = {
+  container: {
+    alignItems: "center",
+    background: "#05a5d1",
+    boxShadow: "0 -8px 4px 10px rgba(0,0,0,.2)",
+    boxSizing: "border-box",
+    color: "#fff",
+    display: "flex",
+    //height: 0, // Overridden with component state
+    padding: StylingUtil.remCalc(0, 20)
+  },
+  titleArea: {
+    WebkitBoxFlex: 1,
+    flex: 1,
+    //lineHeight: 0, // Overridden with component state
+    minWidth: StylingUtil.remCalc(180)
+  },
+  logo: {
+    height: "1em",
+    paddingRight: StylingUtil.remCalc(10),
+    verticalAlign: "-0.05em",
+    width: "1em"
+  },
+  title: {
+    color: "#fff",
+    fontSize: StylingUtil.remCalc(26),
+    fontWeight: 600,
+    textDecoration: "none"
+  },
+  center: {
+    alignItems: "center",
+    WebkitBoxFlex: 1,
+    flex: 1,
+    flexGrow: 4,
+    justifyContent: "center",
+    margin: StylingUtil.remCalc(10),
+    maxWidth: StylingUtil.remCalc(800)
+  },
+  search: {
+    background: "rgba(255,255,255, .15)",
+    border: "none",
+    borderRadius: "2px",
+    boxSizing: "border-box",
+    fontSize: StylingUtil.remCalc(16),
+    outline: "none",
+    padding: StylingUtil.remCalc(8, 10),
+    width: "100%"
+  },
+  link: {
+    color: "#fff",
+    WebkitBoxFlex: 1,
+    flex: 1,
+    margin: StylingUtil.remCalc(12, 0),
+    minWidth: StylingUtil.remCalc(180),
+    display: "block",
+    textAlign: "right",
+    textDecoration: "none"
+  }
+};
 
 export default NavBar;

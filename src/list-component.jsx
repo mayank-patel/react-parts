@@ -2,27 +2,17 @@
 'use strict';
 
 import React from 'react/addons';
-import StylingMixin from './styling-mixin.jsx';
+import StylingUtil from './styling-util.jsx';
 import ComponentItem from './item-component.jsx';
 
 let PureRenderMixin = React.addons.PureRenderMixin;
 
 let NoComponents = React.createClass({
-  mixins: [StylingMixin, PureRenderMixin],
+  mixins: [PureRenderMixin],
   render() {
-    let styles = {
-      container: {
-        background: "#fff",
-        boxShadow: "0 1px 2px rgba(0,0,0,.2)",
-        margin: 1,
-        padding: this.remCalc(15, 20),
-        color: "#999",
-      },
-      message: {
-        width: "100%",
-        textAlign: "center",
-      }
-    };
+    // Clone the CSS styles and set any state-dependent property
+    let styles = Object.assign({}, this.constructor.styles);
+
     return (
       <div style={styles.container}>
         <p style={styles.message}>No components found.</p>
@@ -31,17 +21,29 @@ let NoComponents = React.createClass({
   }
 });
 
+NoComponents.styles = {
+  container: {
+    background: "#fff",
+    boxShadow: "0 1px 2px rgba(0,0,0,.2)",
+    margin: 1,
+    padding: StylingUtil.remCalc(15, 20),
+    color: "#999",
+  },
+  message: {
+    width: "100%",
+    textAlign: "center",
+  }
+};
+
 let ComponentList = React.createClass({
-  mixins: [StylingMixin, PureRenderMixin],
+  mixins: [PureRenderMixin],
   propTypes: {
     components: React.PropTypes.array.isRequired
   },
   render() {
-    let styles = {
-      listStyle: "none",
-      margin: 0,
-      padding: 0
-    };
+    // Clone the CSS styles and set any state-dependent property
+    let styles = Object.assign({}, this.constructor.styles);
+
     let components = this.props.components.map(function(item, index) {
       return (
         <li key={index}>
@@ -63,5 +65,11 @@ let ComponentList = React.createClass({
     );
   }
 });
+
+ComponentList.styles = {
+  listStyle: "none",
+  margin: 0,
+  padding: 0
+};
 
 export default ComponentList;
